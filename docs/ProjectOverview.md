@@ -62,3 +62,36 @@ Testing Tools
 - Postman
 - Git/GitHub
 - Manual system testing
+
+## High-Level System Overview
+
+### Major Modules / Subsystems
+
+1. **Flood Monitoring Module**
+   - Monitors the water level using the flood sensor.
+   - Detects if the water level is normal, warning, or critical.
+
+2. **Renewable Energy Monitoring Module**
+   - Monitors the solar and wind energy used by the system.
+   - Provides information about the available renewable energy.
+
+3. **Streetlight Management Module**
+   - Manages the operation of the renewable energy powered streetlight.
+   - Monitors the streetlight status and power condition.
+
+4. **Alert and Dashboard Module**
+   - Displays flood level, renewable energy data, and streetlight status.
+   - Provides warning or critical alerts to authorized users.
+
+### External Systems / Interfaces
+
+- Flood Sensor
+- Solar Energy Sensor
+- Wind Energy Sensor
+- Streetlight
+- Web Dashboard
+- Monitoring Database
+
+### Data Flow Summary
+
+The flood sensor sends water level data to the SOLARIS system, while the solar and wind energy sensors send renewable energy data. The system processes and stores the collected information in the monitoring database. The data is then displayed on the dashboard for authorized users.. If the water reaches a warning or critical level, the system generates an alert. The system also monitors and manages the operation of the renewable energy powered streetlight.
