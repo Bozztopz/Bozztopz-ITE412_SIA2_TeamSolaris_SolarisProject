@@ -9,7 +9,6 @@ Team Members & Roles
 - Vincent B. Fajarito - Presenter
 - Althea S. Panagsagan - Documentator
 - Dann Pablo - Diagrammer
-- GitHub Copilot - AI Assistant
 
 Project Summary
 SOLARIS is an IoT-based flood monitoring system with a renewable energy powered streetlight. The system is designed to monitor water level and provide warning or critical alerts when the water reaches certain levels. It also monitors the solar and wind energy used to power the streetlight. The system provides information through a dashboard to help authorized users monitor the condition of the flood sensor and renewable energy system.
