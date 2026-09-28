@@ -50,9 +50,9 @@ Hardware/IoT
 - Solar charge controller
 - Current and voltage sensors
 Integration Approach
-- REST API
-- Firebase Realtime Database
-- IoT device-to-cloud data communication
+- Proposed hybrid integration pattern: REST API for device/backend requests and Firebase Realtime Database for real-time state distribution and persistence.
+- IoT device-to-cloud communication from the ESP32 to the Laravel service.
+- React dashboard for authorized users, with REST requests for service operations and live Firebase updates for monitoring data.
 Repositories/Services
 - GitHub – source code management and collaboration
 - Firebase – real-time data storage
@@ -64,6 +64,16 @@ Testing Tools
 - Manual system testing
 
 ## High-Level System Overview
+
+![SOLARIS high-level architecture](HighLevelArch.png)
+
+### Integration Pattern & Rationale
+
+SOLARIS uses a **hybrid IoT-to-cloud integration pattern**: the ESP32 sends sensor telemetry to the Laravel backend through a REST API, while Firebase Realtime Database stores the latest system state and monitoring records and distributes updates to the React dashboard. The Laravel backend applies flood thresholds, coordinates alerts and streetlight status, and acts as the trusted boundary between devices, data storage, external services, and users. OpenWeather data, when enabled, is retrieved by the backend through its API rather than directly by the device.
+
+This pattern is proposed because REST provides a simple, interoperable request/response contract for device telemetry and backend operations, while Firebase's real-time synchronization supports a responsive dashboard without requiring frequent polling. Keeping threshold evaluation and integrations in the backend centralizes system rules and avoids giving field devices direct access to user-facing services or broad database permissions. The ESP32 remains responsible for local sensor interfacing and streetlight I/O, which keeps the field connection practical even when cloud services are temporarily unavailable; data delivery and alert freshness still depend on connectivity.
+
+For deployment, expose the backend over HTTPS, authenticate and validate device requests, and restrict Firebase access so devices cannot write arbitrary records. These are recommended integration controls and should be configured as implementation work proceeds.
 
 ### Major Modules / Subsystems
 
