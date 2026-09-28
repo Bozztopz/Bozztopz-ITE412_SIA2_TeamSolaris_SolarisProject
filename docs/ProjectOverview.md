@@ -105,3 +105,10 @@ For deployment, expose the backend over HTTPS, authenticate and validate device 
 ### Data Flow Summary
 
 The flood sensor sends water level data to the SOLARIS system, while the solar and wind energy sensors send renewable energy data. The system processes and stores the collected information in the monitoring database. The data is then displayed on the dashboard for authorized users.. If the water reaches a warning or critical level, the system generates an alert. The system also monitors and manages the operation of the renewable energy powered streetlight.
+
+### SOLARIS API TESTING
+
+The SOLARIS REST API is developed using Node.js and Express.js.
+To run the API, open the project folder in PowerShell and execute node src\api\server.js.
+The API will run at http://localhost:3000.
+Use Postman to test the Flood Monitoring and Energy Monitoring endpoints using GET, POST, PUT, and DELETE requests.
