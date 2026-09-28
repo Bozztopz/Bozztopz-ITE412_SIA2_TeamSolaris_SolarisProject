@@ -1,15 +1,17 @@
 Project Overview
+
 1. System Objectives
-The SOLARIS project aims to develop an IoT-based flood monitoring system with a renewable energy powered streetlight. The system is designed to help monitor the water level and provide alerts when the water reaches warning or critical levels. It also monitors the solar and wind energy used to power the streetlight. The project aims to provide authorized users with clear and accessible information through a dashboard for easier monitoring and response.
+   The SOLARIS project aims to develop an IoT-based flood monitoring system with a renewable energy powered streetlight. The system is designed to help monitor the water level and provide alerts when the water reaches warning or critical levels. It also monitors the solar and wind energy used to power the streetlight. The project aims to provide authorized users with clear and accessible information through a dashboard for easier monitoring and response.
 2. Proposed Scope
-The proposed system will integrate the following modules:
+   The proposed system will integrate the following modules:
+
 - Flood Monitoring Module – monitors the water level using an ultrasonic sensor and identifies warning and critical conditions.
 - Alert and Notification Module – provides alerts when the water level reaches the defined warning or critical threshold.
 - Renewable Energy Monitoring Module – monitors the solar and wind energy sources used for the streetlight.
 - Streetlight Module – uses renewable energy to provide lighting and monitors its electrical output.
 - Dashboard Module – displays flood status, water level, energy information, and system conditions for authorized users.
 - Data Storage Module – stores monitoring data and historical records for viewing and reporting.
-In-Scope Features
+  In-Scope Features
 - Water-level monitoring
 - Flood warning and critical status
 - Flood alerts and notifications
@@ -19,29 +21,31 @@ In-Scope Features
 - Renewable-energy-powered streetlight monitoring
 - Dashboard for system monitoring
 - Storage of monitoring data and history
-Out-of-Scope Features
-The following features are not included in the initial scope:
+  Out-of-Scope Features
+  The following features are not included in the initial scope:
 - Automatic flood evacuation
 - Automatic control of community emergency services
 - Large-scale weather prediction
 - Advanced artificial intelligence flood prediction
 - Control of external government emergency systems
+
 3. Stakeholders
-Barangay Officials
-Barangay officials are the primary users of the system. They need clear and updated information about the water level, flood status, alerts, and system condition to support monitoring and response.
-Community Residents
-Residents are indirect beneficiaries of the system because flood monitoring and warning information can help improve awareness of possible flood conditions in the community.
-Project Team
-The project team is responsible for designing, developing, integrating, testing, documenting, and presenting the SOLARIS system.
+   Barangay Officials
+   Barangay officials are the primary users of the system. They need clear and updated information about the water level, flood status, alerts, and system condition to support monitoring and response.
+   Community Residents
+   Residents are indirect beneficiaries of the system because flood monitoring and warning information can help improve awareness of possible flood conditions in the community.
+   Project Team
+   The project team is responsible for designing, developing, integrating, testing, documenting, and presenting the SOLARIS system.
 4. Tools & Technologies
-Languages/Frameworks
+   Languages/Frameworks
+
 - PHP
 - Laravel
 - JavaScript
 - React
 - HTML
 - CSS
-Hardware/IoT
+  Hardware/IoT
 - ESP32
 - Ultrasonic water-level sensor
 - Solar panel
@@ -49,15 +53,15 @@ Hardware/IoT
 - Battery
 - Solar charge controller
 - Current and voltage sensors
-Integration Approach
+  Integration Approach
 - Proposed hybrid integration pattern: REST API for device/backend requests and Firebase Realtime Database for real-time state distribution and persistence.
 - IoT device-to-cloud communication from the ESP32 to the Laravel service.
 - React dashboard for authorized users, with REST requests for service operations and live Firebase updates for monitoring data.
-Repositories/Services
+  Repositories/Services
 - GitHub – source code management and collaboration
 - Firebase – real-time data storage
 - OpenWeather API – weather information
-Testing Tools
+  Testing Tools
 - Browser Developer Tools
 - Postman
 - Git/GitHub
@@ -78,14 +82,17 @@ For deployment, expose the backend over HTTPS, authenticate and validate device 
 ### Major Modules / Subsystems
 
 1. **Flood Monitoring Module**
+
    - Monitors the water level using the flood sensor.
    - Detects if the water level is normal, warning, or critical.
 
 2. **Renewable Energy Monitoring Module**
+
    - Monitors the solar and wind energy used by the system.
    - Provides information about the available renewable energy.
 
 3. **Streetlight Management Module**
+
    - Manages the operation of the renewable energy powered streetlight.
    - Monitors the streetlight status and power condition.
 
@@ -112,3 +119,75 @@ The SOLARIS REST API is developed using Node.js and Express.js.
 To run the API, open the project folder in PowerShell and execute node src\api\server.js.
 The API will run at http://localhost:3000.
 Use Postman to test the Flood Monitoring and Energy Monitoring endpoints using GET, POST, PUT, and DELETE requests.
+
+## Messaging Workflow
+
+The SOLARIS system uses a message-oriented middleware prototype to demonstrate asynchronous communication between the flood monitoring and alert/notification components.
+
+The messaging workflow follows the producer-consumer pattern:
+
+```text
+SOLARIS Flood Monitoring / IoT Module
+                |
+                v
+           Producer
+                |
+                v
+          Message Queue
+                |
+                v
+            Consumer
+                |
+                v
+       Alert / Notification
+```
+
+### Producer
+
+The Producer represents the flood monitoring or IoT component that generates flood monitoring events. When a water-level reading is detected, the producer creates a message containing the location, water level, flood status, and timestamp.
+
+The prototype uses the following sample conditions:
+
+- 0.5 m - NORMAL
+- 0.7 m - WARNING
+- 1.2 m - CRITICAL
+
+### Message Queue
+
+The Message Queue temporarily stores the generated flood events before they are processed by the consumer. The prototype uses a simple FIFO (First In, First Out) in-memory queue implemented in `integration/middleware/queue.js`.
+
+### Consumer
+
+The Consumer represents the SOLARIS alert and notification component. It retrieves flood events from the queue and processes them asynchronously.
+
+The consumer generates a normal status message for normal conditions and an alert message when the flood status is WARNING or CRITICAL.
+
+### Asynchronous Processing
+
+The prototype demonstrates asynchronous communication by allowing the producer to place multiple flood events into the queue before the consumer processes them one at a time.
+
+The test produced the following results:
+
+```text
+0.5 m -> NORMAL
+0.7 m -> WARNING
+1.2 m -> CRITICAL
+```
+
+After processing all messages, the consumer reports that there are no remaining messages in the queue.
+
+### Middleware Prototype Location
+
+The messaging middleware implementation is located in:
+
+```text
+integration/
+└── middleware/
+    ├── queue.js
+    ├── producer.js
+    ├── consumer.js
+    ├── demo.js
+    └── README.md
+```
+
+The prototype currently uses an in-memory queue for demonstration purposes. A production implementation could use a dedicated messaging platform such as RabbitMQ or Apache Kafka.
